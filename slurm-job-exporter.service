@@ -1,0 +1,12 @@
+[Unit]
+Description=Slurm Job Exporter service
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/slurm-job-exporter
+ExecStart=/bin/ruby /opt/slurm-job-exporter/bin/exporter.rb
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

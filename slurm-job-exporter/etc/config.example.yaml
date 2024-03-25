@@ -1,0 +1,3 @@
+exporter:
+  port: 9107
+  log: log/slurm-job-exporter.log
