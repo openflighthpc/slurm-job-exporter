@@ -35,7 +35,7 @@ def runServer()
 
 	$log.info "Starting slurm job exporter on port #{port}.."
 
-	Net::HTTP::Server.run(:host => "localhost", :port => port) do |request,stream|
+        Net::HTTP::Server.run(:host => "127.0.0.1", :port => port) do |request,stream|
 		if request[:method] == "GET" and request[:uri][:path] == "/" ; then
 			[200, {'Content-Type' => 'text/html'}, ['<html><head><title>Slurm Job Exporter</title></head><body><h1>Slurm Job Exporter</h1><p><a href="/metrics">Metrics</a></p></body></html>']]
 		elsif request[:method] == "GET" and request[:uri][:path] == "/metrics"
