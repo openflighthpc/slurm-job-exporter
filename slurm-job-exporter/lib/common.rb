@@ -1,21 +1,5 @@
 #!/bin/ruby
 
-require 'logger'
-
-require_relative 'config.rb'
-
-$CONFIG=loadConfig()
-
-# Default log path
-log_path = "log/slurm-job-metrics.log"
-
-if $CONFIG.key?('exporter') and $CONFIG['exporter'].key?('log') ; then
-	log_path = $CONFIG['exporter']['log']
-end
-
-$log = Logger.new(log_path)
-$log.level = Logger::INFO
-
 # Converts varying slurm runtime formats to seconds
 def parseRuntime(runtime)
 	# 7-22:12:48

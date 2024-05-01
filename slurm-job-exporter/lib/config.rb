@@ -12,3 +12,5 @@ def loadConfig()
 
         return YAML.load_file(config_file_path)
 end
+
+$CONFIG=loadConfig()

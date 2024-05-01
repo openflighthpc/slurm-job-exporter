@@ -2,6 +2,8 @@
 
 require 'net/http/server'
 
+require_relative '../lib/config.rb'
+require_relative '../lib/log.rb'
 require_relative '../lib/common.rb'
 require_relative '../lib/slurm.rb'
 
@@ -16,7 +18,7 @@ def collectMetrics()
 	metrics = []
 
 	completed_jobs.each do |job|
-		metrics << "slurm_job_meta{jobid=\"#{job['id']}\", state=\"#{job['state']}\", partition=\"#{job['partition']}\", account=\"#{job['account']}\", user=\"#{job['user']}\", nodes=\"#{job['alloc_nodes']}\", cpus=\"#{job['alloc_cpus']}\", memory=\"#{job['req_mem']}\", cpu_eff=\"#{job['cpu_eff']}\", mem_util=\"#{job['max_mem_util']}\", runtime=\"#{job['runtime_str']}\"} 1\n"
+		metrics << "slurm_job_meta{jobid=\"#{job['id']}\", state=\"#{job['state']}\", partition=\"#{job['partition']}\", account=\"#{job['account']}\", user=\"#{job['user']}\", nodes=\"#{job['alloc_nodes']}\", cpus=\"#{job['alloc_cpus']}\", memory=\"#{job['alloc_mem']}\", gpus=\"#{job['alloc_gpus']}\", cpu_eff=\"#{job['cpu_eff']}\", mem_util=\"#{job['max_mem_util']}\", runtime=\"#{job['runtime_str']}\"} 1\n"
 		metrics << "slurm_job_cpu_eff{jobid=\"#{job['id']}\", account=\"#{job['account']}\", user=\"#{job['user']}\"} #{job['cpu_eff']}\n"
 		metrics << "slurm_job_mem_util{jobid=\"#{job['id']}\", account=\"#{job['account']}\", user=\"#{job['user']}\"} #{job['max_mem_util']}\n"
 	end
@@ -35,7 +37,7 @@ def runServer()
 
 	$log.info "Starting slurm job exporter on port #{port}.."
 
-        Net::HTTP::Server.run(:host => "127.0.0.1", :port => port) do |request,stream|
+	Net::HTTP::Server.run(:port => port) do |request,stream|
 		if request[:method] == "GET" and request[:uri][:path] == "/" ; then
 			[200, {'Content-Type' => 'text/html'}, ['<html><head><title>Slurm Job Exporter</title></head><body><h1>Slurm Job Exporter</h1><p><a href="/metrics">Metrics</a></p></body></html>']]
 		elsif request[:method] == "GET" and request[:uri][:path] == "/metrics"
