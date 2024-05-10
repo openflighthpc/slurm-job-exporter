@@ -50,7 +50,7 @@ def getCompleted(start_time, end_time)
 		if job['alloc_tres']['cpu'] ; then
 			job['alloc_cpus'] = job['alloc_tres']['cpu'].to_i
 		else
-			job['alloc_cpus'] = job['req_mem']
+			job['alloc_cpus'] = job['req_cpus']
 		end
 
 		# Allocated GPUs
