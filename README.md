@@ -13,8 +13,11 @@ slurm_job_mem_util{jobid="12345678", account="default", user="user1"} 0.05
 - Git
 - Ruby (tested with v2.7.1)
 - Ruby `bundle`
+- SLURM Accounting enabled.
 
 ## Installation
+The exporter must be installed on a suitable host with access to the Slurm command-line interface (specifically `sacct`).
+
 Clone this git repository and checkout the desired branch / release.
 ```
 git clone
