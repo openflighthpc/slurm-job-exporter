@@ -2,7 +2,13 @@
 
 # Returns seff like stats for completed jobs within start_time -> end_time
 def getCompleted(start_time, end_time)
-	sacct_output = `sacct -s cd,f,to,dl,nf --starttime #{start_time} --endtime #{end_time} -o JobID,State,Account,User,Elapsed,ReqCPUs,ReqMem,NNodes,Partition,AllocTres --parsable2 --noheader --noconvert --allocations`
+        if $CONFIG.key?("slurm") and $CONFIG['slurm'].key?("sacct") and File.exists?($CONFIG['slurm']['sacct'])
+                sacct = $CONFIG['slurm']['sacct']
+        else
+                sacct = "sacct"
+        end
+
+	sacct_output = `#{sacct} -s cd,f,to,dl,nf --starttime #{start_time} --endtime #{end_time} -o JobID,State,Account,User,Elapsed,ReqCPUs,ReqMem,NNodes,Partition,AllocTres --parsable2 --noheader --noconvert --allocations`
 
 	completed_jobs = []
 
@@ -59,7 +65,7 @@ def getCompleted(start_time, end_time)
                 end
 
 		# Get all associated job steps
-		step_sacct_output = `sacct -j #{job['id']} -o JobID,MaxRSS,TotalCPU,NTasks --noheader --parsable2 --noconvert`
+		step_sacct_output = `#{sacct} -j #{job['id']} -o JobID,MaxRSS,TotalCPU,NTasks --noheader --parsable2 --noconvert`
 
 		step_sacct_output.each_line do |step_line|
 			step_parts = step_line.split("|")
