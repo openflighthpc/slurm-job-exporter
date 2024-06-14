@@ -48,6 +48,8 @@ Minimal configuration example:
 exporter:
   port: 9107
   log: log/slurm-job-exporter.log
+slurm:
+  sacct: /usr/bin/sacct
 ```
 
 Enable and start the service
