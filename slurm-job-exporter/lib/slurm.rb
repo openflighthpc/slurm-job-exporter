@@ -8,7 +8,7 @@ def getCompleted(start_time, end_time)
                 sacct = "sacct"
         end
 
-	sacct_output = `#{sacct} -s cd,f,to,dl,nf --starttime #{start_time} --endtime #{end_time} -o JobID,State,Account,User,Elapsed,ReqCPUs,ReqMem,NNodes,Partition,AllocTres --parsable2 --noheader --noconvert --allocations`
+	sacct_output = `#{sacct} -s cd,f,to,dl,nf --starttime #{start_time} --endtime #{end_time} -o JobID,State,Account,User,Elapsed,ReqCPUs,ReqMem,NNodes,Partition,AllocTres,Planned --parsable2 --noheader --noconvert --allocations`
 
 	completed_jobs = []
 
@@ -90,6 +90,7 @@ def getCompleted(start_time, end_time)
 		job['cpu_eff'] = 0.0 if job['cpu_eff'].nan? or job['cpu_eff'] < 0 or job['cpu_eff'].infinite?()
 		job['max_mem_util'] = 0.0 if job['max_mem_util'].nan? or job['max_mem_util'] < 0 or job['max_mem_util'].infinite?()
 
+                job['wait_time'] = parts[10].strip 
 		completed_jobs << job
 
 	end
