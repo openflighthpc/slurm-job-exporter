@@ -90,7 +90,7 @@ def getCompleted(start_time, end_time)
 		job['cpu_eff'] = 0.0 if job['cpu_eff'].nan? or job['cpu_eff'] < 0 or job['cpu_eff'].infinite?()
 		job['max_mem_util'] = 0.0 if job['max_mem_util'].nan? or job['max_mem_util'] < 0 or job['max_mem_util'].infinite?()
 
-                job['wait_time'] = parts[10].strip 
+                job['wait_time'] = parseRuntime(parts[10].strip)
 		completed_jobs << job
 
 	end
