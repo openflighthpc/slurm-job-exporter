@@ -14,11 +14,10 @@ def collectMetrics()
 	$log.info "Evaluating #{start_time} -> #{end_time}"
 
 	completed_jobs = getCompleted(start_time, end_time)
-
 	metrics = []
 
 	completed_jobs.each do |job|
-		metrics << "slurm_job_meta{jobid=\"#{job['id']}\", state=\"#{job['state']}\", partition=\"#{job['partition']}\", account=\"#{job['account']}\", user=\"#{job['user']}\", nodes=\"#{job['alloc_nodes']}\", cpus=\"#{job['alloc_cpus']}\", memory=\"#{job['alloc_mem']}\", gpus=\"#{job['alloc_gpus']}\", cpu_eff=\"#{job['cpu_eff']}\", mem_util=\"#{job['max_mem_util']}\", runtime=\"#{job['runtime_str']}\", runtime_sec=\"#{job['runtime']}\", wait_time=\"#{job['wait_time']}\"} 1\n"
+		metrics << "slurm_job_meta{jobid=\"#{job['id']}\", state=\"#{job['state']}\", partition=\"#{job['partition']}\", account=\"#{job['account']}\", user=\"#{job['user']}\", nodes=\"#{job['alloc_nodes']}\", cpus=\"#{job['alloc_cpus']}\", memory=\"#{job['alloc_mem']}\", gpus=\"#{job['alloc_gpus']}\", cpu_eff=\"#{job['cpu_eff']}\", mem_util=\"#{job['max_mem_util']}\", runtime=\"#{job['runtime_str']}\", runtime_sec=\"#{job['runtime']}\", wait_time=\"#{job['wait_time']}\", date=\"#{job['date']}\", day=\"#{job['day']}\", hour=\"#{job['hour']}\"} 1\n"
 		metrics << "slurm_job_cpu_eff{jobid=\"#{job['id']}\", account=\"#{job['account']}\", user=\"#{job['user']}\"} #{job['cpu_eff']}\n"
 		metrics << "slurm_job_mem_util{jobid=\"#{job['id']}\", account=\"#{job['account']}\", user=\"#{job['user']}\"} #{job['max_mem_util']}\n"
 	end

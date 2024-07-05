@@ -1,5 +1,7 @@
 #!/bin/ruby
 
+require 'date'
+
 # Converts varying slurm runtime formats to seconds
 def parseRuntime(runtime)
 	# 7-22:12:48
@@ -31,3 +33,9 @@ def parseRuntime(runtime)
 		return 0
 	end
 end
+
+# Function to parse the date and time
+def parse_datetime(dt_str)
+	return DateTime.strptime(dt_str, '%Y-%m-%dT%H:%M:%S')
+end
+  

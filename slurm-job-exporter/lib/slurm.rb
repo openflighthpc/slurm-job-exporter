@@ -8,14 +8,14 @@ def getCompleted(start_time, end_time)
                 sacct = "sacct"
         end
 
-	sacct_output = `#{sacct} -s cd,f,to,dl,nf --starttime #{start_time} --endtime #{end_time} -o JobID,State,Account,User,Elapsed,ReqCPUs,ReqMem,NNodes,Partition,AllocTres,Planned --parsable2 --noheader --noconvert --allocations`
+	sacct_output = `#{sacct} -s cd,f,to,dl,nf --starttime #{start_time} --endtime #{end_time} -o JobID,State,Account,User,Elapsed,ReqCPUs,ReqMem,NNodes,Partition,AllocTres,Planned,Submit --parsable2 --noheader --noconvert --allocations`
 
 	completed_jobs = []
 
 	sacct_output.each_line do |job_line|
 		parts = job_line.split("|")
 
-		#JobID,State,Account,User,Elapsed,ReqCPUs,ReqMem,NNodes,Partition,AllocTres
+		#JobID,State,Account,User,Elapsed,ReqCPUs,ReqMem,NNodes,Partition,AllocTres,Planned,Submit
 		job = {}
 		job['id'] = parts[0].strip
 		job['state'] = parts[1].strip
@@ -31,6 +31,10 @@ def getCompleted(start_time, end_time)
 		job['alloc_tres_str'] = parts[9].strip
 		job['total_cpu'] = 0
 		job['max_rss'] = 0
+		submit_time = parse_datetime(parts[11].strip)
+		job['day'] = submit_time.strftime('%A')
+		job['hour'] = submit_time.hour
+		job['date'] = submit_time.to_date
 		job['steps'] = []
 
 		job['alloc_tres'] = {}
